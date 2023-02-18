@@ -34,6 +34,9 @@
 
 #include <stdlib.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 
 #define NUM_READINGS	40		//reading repetitions in calibration
@@ -47,5 +50,8 @@ void DrawCross(uint16_t x,uint16_t y,uint16_t fcol);
 void Touch_TestDrawing();
 
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* INC_Z_TOUCH_XPT2046_TEST_H_ */

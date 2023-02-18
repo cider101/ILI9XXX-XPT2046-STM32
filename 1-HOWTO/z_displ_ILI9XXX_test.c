@@ -28,9 +28,9 @@
  *
  */
 
-
-
 #include "main.h"
+#include "z_displ_ILI9XXX.h"
+#include "z_displ_ILI9XXX_test.h"
 
 extern int16_t _width;       								///< (oriented) display width
 extern int16_t _height;      								///< (oriented) display height
@@ -520,6 +520,3 @@ void Displ_PerfTest() {
 #endif
 	}
 }
-
-
-

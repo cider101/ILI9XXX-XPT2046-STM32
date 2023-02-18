@@ -11,7 +11,11 @@
 #ifndef INC_Z_TOUCH_XPT2046_MENU_H_
 #define INC_Z_TOUCH_XPT2046_MENU_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
+#include "z_displ_ILI9XXX.h"
 
 // Menu data definitions and declarations
 
@@ -41,6 +45,9 @@ void RunMenu1();
 
 
 
+#ifdef __cplusplus
+}
+#endif
 
 
 

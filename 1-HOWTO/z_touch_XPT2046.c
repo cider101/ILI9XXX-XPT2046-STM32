@@ -29,6 +29,7 @@ bool STM32TouchController::sampleTouch(int32_t& x, int32_t& y)
 
 
 #include "main.h"
+#include "z_touch_XPT2046.h"
 
 extern SPI_HandleTypeDef TOUCH_SPI_PORT;
 extern volatile uint8_t Displ_SpiAvailable;  			// 0 if SPI is busy or 1 if it is free (transm cplt)

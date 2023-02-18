@@ -31,6 +31,8 @@
 
 
 #include "main.h"
+#include "z_touch_XPT2046_test.h"
+#include "z_touch_XPT2046.h"
 
 extern int16_t _width;       								///< (oriented) display width
 extern int16_t _height;      								///< (oriented) display height

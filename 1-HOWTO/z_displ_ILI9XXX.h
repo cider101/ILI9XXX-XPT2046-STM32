@@ -28,6 +28,9 @@
 #ifndef __Z_DISPL_ILI9XXX_H
 #define __Z_DISPL_ILI9XXX_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*||||||||||| USER/PROJECT PARAMETERS |||||||||||*/
 
@@ -36,16 +39,20 @@
  * uncommenting the below #define to enable
  * functions interfacing TouchGFX
  ***************************************************/
-#define DISPLAY_USING_TOUCHGFX
-
+#ifdef USE_TOUCHGFX
+	#define DISPLAY_USING_TOUCHGFX
+#endif
 
 /******************    STEP 1    *****************
  * which display are you using?
  *************************************************/
 //#define ILI9341
 //#define ILI9488_V1
-#define ILI9488_V2
-
+//#define ILI9488_V2
+#if !defined(ILI9341) && !defined(ILI9488_V1) && !defined(ILI9488_V2)
+	#warning "no board version (ILI9341 or ILI9488_V1 or ILI9488_V2) defined - using default ILI9488_V2"
+	#define ILI9488_V2
+#endif
 
 /******************    STEP 2    ******************
  **************** PORT PARAMETERS *****************
@@ -62,9 +69,15 @@
  * when transferring data to/from DISPLAY or TOUCH
  * Keep in mind that Touch SPI Baudrate should be no more than 1 Mbps
  ***************************************************/
-#define DISPL_PRESCALER SPI_BAUDRATEPRESCALER_2     //prescaler assigned to display SPI port
-#define TOUCH_PRESCALER SPI_BAUDRATEPRESCALER_256	//prescaler assigned to touch device SPI port
+#ifndef DISPL_PRESCALER
+	#warning "DISPL_PRESCALER not set - using SPI_BAUDRATEPRESCALER_2"
+	#define DISPL_PRESCALER SPI_BAUDRATEPRESCALER_2     //prescaler assigned to display SPI port
+#endif
 
+//#if defined(TOUCH_SPI) && !defined(TOUCH_PRESCALER)
+//	#warning "TOUCH_PRESCALER not set - using SPI_BAUDRATEPRESCALER_256"
+//	#define TOUCH_PRESCALER SPI_BAUDRATEPRESCALER_256	//prescaler assigned to touch device SPI port
+//#endif
 
 /*****************     STEP 4      *****************
  ************* SPI COMMUNICATION MODE **************
@@ -73,7 +86,11 @@
  ***************************************************/
 //#define DISPLAY_SPI_POLLING_MODE
 //#define DISPLAY_SPI_INTERRUPT_MODE
-#define DISPLAY_SPI_DMA_MODE // (mixed: polling/DMA, see below)
+//#define DISPLAY_SPI_DMA_MODE // (mixed: polling/DMA, see below)
+#if !defined(DISPLAY_SPI_POLLING_MODE) && !defined(DISPLAY_SPI_INTERRUPT_MODE) &&  !defined(DISPLAY_SPI_DMA_MODE)
+	#warning "SPI Mode not definded - setting DMA mode as default"
+	#define DISPLAY_SPI_DMA_MODE
+#endif
 
 
 /*****************     STEP 5      *****************
@@ -92,14 +109,14 @@
  * let timer clock to be higher than COUNTER PERIOD * 100 Hz.
  * Set all other defines below 
  ***************************************************/
-#define DISPLAY_DIMMING_MODE						// uncomment this define to enable dimming function otherwise there is an on/off switching function
-#define BKLIT_TIMER 				TIM3			//timer used (PWMming DISPL_LED pin)
-#define BKLIT_T 					htim3			//timer used
-#define BKLIT_CHANNEL				TIM_CHANNEL_2	//channel used
-#define BKLIT_CCR					CCR2			//Capture-compare register used
-#define BKLIT_STBY_LEVEL 			1				//Display backlight level when in stand-by (levels are CNT values)
-#define BKLIT_INIT_LEVEL 			100				//Display backlight level on startup
-
+#ifdef DISPLAY_DIMMING_MODE 							//set this define to enable dimming function otherwise there is an on/off switching function
+	#define BKLIT_TIMER 				TIM3				//timer used (PWMming DISPL_LED pin)
+	#define BKLIT_T 					htim3				//timer used
+	#define BKLIT_CHANNEL			TIM_CHANNEL_2	//channel used
+	#define BKLIT_CCR					CCR2				//Capture-compare register used
+	#define BKLIT_STBY_LEVEL 		1					//Display backlight level when in stand-by (levels are CNT values)
+	#define BKLIT_INIT_LEVEL 		100				//Display backlight level on startup
+#endif
 
 /*****************     STEP 6      *****************
  ************* frame buffer DEFINITION *************
@@ -118,8 +135,10 @@
  * TouchGFX buffers>2700bytes need BUFLEVEL 13
  * TouchGFX buffers>1300bytes need BUFLEVEL 12
 ***************************************************/
-#define BUFLEVEL 12
-
+#ifndef BUFLEVEL
+	#warning "BUFLEVEL not defined - using 2^12 bytes as default size"
+	#define BUFLEVEL 12
+#endif
 /*|||||||| END OF USER/PROJECT PARAMETERS ||||||||*/
 
 
@@ -171,6 +190,7 @@
 
 
 #include <string.h>
+#include "fonts.h"
 
 typedef enum {
 	Displ_Orientat_0,
@@ -293,5 +313,9 @@ void touchgfxDisplayDriverTransmitBlock(const uint8_t* pixels, uint16_t x, uint1
 extern void DisplayDriver_TransferCompleteCallback();
 extern void touchgfxSignalVSync(void);
 #endif /* DISPLAY_USING_TOUCHGFX */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __Z_DISPL_ILI9XXX_H */

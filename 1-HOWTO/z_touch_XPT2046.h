@@ -12,6 +12,11 @@
 #ifndef __XPT2046_H
 #define __XPT2046_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "z_displ_ILI9XXX.h" //FIXME:needed for the ILI9341 or ILI9488 defines
 
 /***** USER/PROJECT PARAMETERS *****/
 
@@ -19,8 +24,15 @@
  ** properly set the below the 2 defines to address
  ********  the SPI port defined on CubeMX *********/
 
-#define TOUCH_SPI_PORT 	hspi1
-#define TOUCH_SPI 		SPI1
+#if !defined(TOUCH_SPI)
+	#define TOUCH_SPI_PORT 	hspi1
+	#define TOUCH_SPI 		SPI1
+#endif
+
+#if defined(TOUCH_SPI) && !defined(TOUCH_PRESCALER)
+	#warning "TOUCH_PRESCALER not set - using SPI_BAUDRATEPRESCALER_256"
+	#define TOUCH_PRESCALER SPI_BAUDRATEPRESCALER_256	//prescaler assigned to touch device SPI port
+#endif
 
 
 /**********   KEY REPEAT FOR TOUCHGFX   ***********
@@ -172,6 +184,10 @@ void Touch_GetXYtouch(uint16_t *x, uint16_t *y, uint8_t *isTouch);
 
 #ifdef DISPLAY_USING_TOUCHGFX
 uint8_t Touch_TouchGFXSampleTouch(int32_t *x, int32_t *y);
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif /* __XPT2046_H */

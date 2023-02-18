@@ -29,6 +29,10 @@
 #ifndef INC_Z_DISPL_ILI9XXX_TEST_H_
 #define INC_Z_DISPL_ILI9XXX_TEST_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -40,5 +44,9 @@
 void Displ_PerfTest();
 void Displ_ColorTest();
 void Displ_TestAll ();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* INC_Z_DISPL_ILI9XXX_TEST_H_ */

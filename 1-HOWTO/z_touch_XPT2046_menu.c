@@ -11,7 +11,7 @@
 
 
 #include "main.h"
-
+#include "z_touch_XPT2046_menu.h"
 
 extern int16_t _width;
 extern int16_t _height;

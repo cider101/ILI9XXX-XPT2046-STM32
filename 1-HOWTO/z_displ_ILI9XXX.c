@@ -13,11 +13,17 @@
 
 
 #include "main.h"
+#include "z_displ_ILI9XXX.h"
 
 extern SPI_HandleTypeDef DISPL_SPI_PORT;
 
 #ifdef DISPLAY_DIMMING_MODE
 extern TIM_HandleTypeDef BKLIT_T;
+#endif
+
+#ifndef TOUCH_SPI
+	#warning "TOUCH_SPI not defined - assuming touch is not on the same SPI bus"
+	#define TOUCH_SPI NULL
 #endif
 
 extern volatile uint8_t Touch_PenDown;				// set to 1 by pendown interrupt callback, reset to 0 by sw
